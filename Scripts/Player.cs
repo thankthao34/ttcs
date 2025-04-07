@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
     private bool facingRight = true;
     private bool isGround = true;
     public Rigidbody2D rb;
+    public Animator animator;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +23,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         movement = Input.GetAxis("Horizontal");
+
         if(movement <0f && facingRight == true ){
             transform.eulerAngles = new Vector3(0f, -180f, 0f);
             facingRight = false;
@@ -31,9 +34,28 @@ public class Player : MonoBehaviour
         }
         if(Input.GetKey(KeyCode.Space) && isGround == true){
             Jump();
+            animator.SetBool("Jump", true);
             isGround = false;  
         }
+
+        if(Mathf.Abs(movement) > .1f) {
+            animator.SetFloat("Walk", 1f);
+        }
+        else if(movement <.1f) {
+            animator.SetFloat("Walk", 0f);
+        }
         
+        if(Input.GetMouseButtonDown(0)){
+            int randomIndex = Random.Range(0,3);
+            if(randomIndex == 0){
+                animator.SetTrigger("Attack1");
+            }
+            else if (randomIndex == 1){
+                animator.SetTrigger("Attack2");
+            }
+            else 
+                animator.SetTrigger("Attack3");
+        }
     }
 
     private void FixedUpdate(){
@@ -49,6 +71,7 @@ public class Player : MonoBehaviour
     {
         if(collision.gameObject.tag == "Ground"){
             isGround = true;
+            animator.SetBool("Jump", false);
         }
     }
 }
