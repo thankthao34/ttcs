@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Enemy1 : MonoBehaviour
 {
+    public Animator animator;
     public Transform player;
     public float attackRange=10f;
     private bool playerInRange = false;
@@ -13,6 +14,10 @@ public class Enemy1 : MonoBehaviour
     public float distance;
     public LayerMask detecLayer;
     private bool facingLeft = true;
+
+    public Transform attackPoint;
+    public float attackRadius = 2f;
+    public LayerMask attackLayyer;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,11 +45,12 @@ public class Enemy1 : MonoBehaviour
             }
 
             if(Vector2.Distance(transform.position, player.position) > retrieveDistance){
+                animator.SetBool("Attack",false);
                 transform.position = Vector2.MoveTowards(transform.position, player.position, chaseSpeed * Time.deltaTime);
 
             }
             else{
-                Debug.Log("Attack");
+                animator.SetBool("Attack", true);
             }
         }
         else{
@@ -66,6 +72,13 @@ public class Enemy1 : MonoBehaviour
             }
         }
     }
+
+    public void Attack(){
+        Collider2D collInfo = Physics2D.OverlapCircle(attackPoint.position, attackRadius,attackLayyer);
+        if(collInfo){
+            Debug.Log(collInfo.gameObject.name+" takes damage");
+        }
+    }
     private void ODrawGizmosSelected()
     {
         if (detectPoint == null){
@@ -73,5 +86,10 @@ public class Enemy1 : MonoBehaviour
         }
         Gizmos.color = Color.yellow;
         Gizmos.DrawRay(detectPoint.position,Vector2.down * distance);
+
+        if(attackPoint != null){
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
+        }
     }
 }
