@@ -27,6 +27,12 @@ public class Enemy1 : MonoBehaviour
         if( maxHealth <=0){
             Die();
         }
+
+        if(player == null){
+            animator.SetBool("PlayerDead",true);
+            return;
+        }
+
         if(Vector2.Distance(transform.position, player.position) <= attackRange){
             playerInRange = true;
         }
@@ -76,7 +82,9 @@ public class Enemy1 : MonoBehaviour
     public void Attack(){
         Collider2D collInfo = Physics2D.OverlapCircle(attackPoint.position, attackRadius,attackLayer);
         if(collInfo){
-            Debug.Log(collInfo.gameObject.name+" takes damage");
+            if(collInfo.GetComponent<Player>() != null){
+                collInfo.GetComponent<Player>().PlayerTakeDamage(1);
+            }
         }
     }
 
@@ -99,8 +107,9 @@ public class Enemy1 : MonoBehaviour
             Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
         }
     }
-    void Die(){
-        Debug.Log(gameObject.name + " Died");
-        Destroy(gameObject);
+    void Die() {
+    Debug.Log(this.gameObject.name + " Died");
+    Destroy(this.gameObject);
+    
     }
 }

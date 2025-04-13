@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
+    public int maxHealth =10 ;
     public float movement;
     public float speed = 7f;
     public float jumpHeight = 10f;
@@ -27,6 +28,9 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(maxHealth <=0){
+            Die();
+        }
         movement = Input.GetAxis("Horizontal");
 
         if(movement <0f && facingRight == true ){
@@ -88,6 +92,12 @@ public class Player : MonoBehaviour
             animator.SetBool("Jump", false);
         }
     }
+    public void PlayerTakeDamage( int damage){
+        if( maxHealth <=0){
+            return;
+        }
+        maxHealth -= damage;
+    }
 
     private void OnDrawGizmosSelected()
     {
@@ -98,5 +108,10 @@ public class Player : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(attackPoint.position,attackRadius);
 
+    }
+
+    void Die(){
+        Debug.Log(this.transform.name + " Died");
+        Destroy(this.gameObject);
     }
 }
