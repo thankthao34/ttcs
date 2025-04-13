@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+
     public float movement;
     public float speed = 7f;
     public float jumpHeight = 10f;
@@ -12,6 +13,10 @@ public class Player : MonoBehaviour
     private bool isGround = true;
     public Rigidbody2D rb;
     public Animator animator;
+
+    public Transform attackPoint;
+    public float attackRadius = 1.5f;
+    public LayerMask targetLayer;
 
     // Start is called before the first frame update
     void Start()
@@ -67,11 +72,31 @@ public class Player : MonoBehaviour
         rb.velocity = velocity;
     }
 
+    public void PlayerAttack(){
+        Collider2D hitInfo = Physics2D.OverlapCircle(attackPoint.position, attackRadius, targetLayer);
+        if ( hitInfo){
+            if(hitInfo.GetComponent<Enemy1>()!= null){
+                hitInfo.GetComponent<Enemy1>().EnemyTakeDamge(1);
+            }
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.tag == "Ground"){
             isGround = true;
             animator.SetBool("Jump", false);
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (attackPoint == null){
+            return ;
+
+        }
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(attackPoint.position,attackRadius);
+
     }
 }

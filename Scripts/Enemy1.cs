@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Enemy1 : MonoBehaviour
 {
+    public int maxHealth =3;
     public Animator animator;
     public Transform player;
     public float attackRange=10f;
@@ -17,16 +18,15 @@ public class Enemy1 : MonoBehaviour
 
     public Transform attackPoint;
     public float attackRadius = 2f;
-    public LayerMask attackLayyer;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public LayerMask attackLayer;
+    
 
     // Update is called once per frame
     void Update()
     {
+        if( maxHealth <=0){
+            Die();
+        }
         if(Vector2.Distance(transform.position, player.position) <= attackRange){
             playerInRange = true;
         }
@@ -74,12 +74,19 @@ public class Enemy1 : MonoBehaviour
     }
 
     public void Attack(){
-        Collider2D collInfo = Physics2D.OverlapCircle(attackPoint.position, attackRadius,attackLayyer);
+        Collider2D collInfo = Physics2D.OverlapCircle(attackPoint.position, attackRadius,attackLayer);
         if(collInfo){
             Debug.Log(collInfo.gameObject.name+" takes damage");
         }
     }
-    private void ODrawGizmosSelected()
+
+    public void EnemyTakeDamge(int damage){
+        if(maxHealth <=0){
+            return;
+        }
+        maxHealth -= damage;
+    }
+    private void OnDrawGizmosSelected()
     {
         if (detectPoint == null){
             return;
@@ -91,5 +98,9 @@ public class Enemy1 : MonoBehaviour
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
         }
+    }
+    void Die(){
+        Debug.Log(gameObject.name + " Died");
+        Destroy(gameObject);
     }
 }
