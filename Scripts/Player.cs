@@ -1,10 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
+    public int currentCoin =0;
+    public Text currentCointext;
+    public Text maxHealthText;
     public int maxHealth =10 ;
     public float movement;
     public float speed = 7f;
@@ -31,6 +32,8 @@ public class Player : MonoBehaviour
         if(maxHealth <=0){
             Die();
         }
+        currentCointext.text = currentCoin.ToString();
+        maxHealthText.text =maxHealth.ToString();
         movement = Input.GetAxis("Horizontal");
 
         if(movement <0f && facingRight == true ){
@@ -97,6 +100,15 @@ public class Player : MonoBehaviour
             return;
         }
         maxHealth -= damage;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.gameObject.tag == "Coin"){
+            currentCoin ++;
+            other.gameObject.transform.GetChild(0).GetComponent<Animator>().SetTrigger("collect");
+            Destroy(other.gameObject, 1f);
+        }
     }
 
     private void OnDrawGizmosSelected()
