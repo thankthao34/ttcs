@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public GameObject gameOverUI;
     public int currentCoin =0;
     public Text currentCointext;
     public Text maxHealthText;
@@ -104,10 +105,15 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log("Va chạm với: " + other.gameObject.name);
         if(other.gameObject.tag == "Coin"){
             currentCoin ++;
             other.gameObject.transform.GetChild(0).GetComponent<Animator>().SetTrigger("collect");
             Destroy(other.gameObject, 1f);
+        }
+
+        if(other.gameObject.tag == "Trap"){
+            Die();
         }
     }
 
@@ -124,6 +130,7 @@ public class Player : MonoBehaviour
 
     void Die(){
         Debug.Log(this.transform.name + " Died");
+        gameOverUI.SetActive(true);
         Destroy(this.gameObject);
     }
 }
