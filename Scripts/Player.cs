@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public GameObject victoryUI;
     public GameObject gameOverUI;
     public int currentCoin =0;
     public Text currentCointext;
@@ -21,6 +22,8 @@ public class Player : MonoBehaviour
     public float attackRadius = 1.5f;
     public LayerMask targetLayer;
 
+    private bool isWon = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +33,10 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isWon){
+            animator.SetFloat("Walk",0);
+            return;
+        }
         if(maxHealth <=0){
             Die();
         }
@@ -109,11 +116,17 @@ public class Player : MonoBehaviour
         if(other.gameObject.tag == "Coin"){
             currentCoin ++;
             other.gameObject.transform.GetChild(0).GetComponent<Animator>().SetTrigger("collect");
-            Destroy(other.gameObject, 1f);
+            Destroy(other.gameObject, 0f);
         }
 
         if(other.gameObject.tag == "Trap"){
             Die();
+        }
+
+        if (other.gameObject.tag == "Key"){
+            victoryUI.SetActive(true);
+            isWon = true;
+            Destroy(other.gameObject);
         }
     }
 
