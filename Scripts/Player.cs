@@ -35,6 +35,8 @@ public class Player : MonoBehaviour
     {
         if (isWon){
             animator.SetFloat("Walk",0);
+            movement =0f;
+            speed =0f;
             return;
         }
         if(maxHealth <=0){
@@ -126,7 +128,7 @@ public class Player : MonoBehaviour
         if (other.gameObject.tag == "Key"){
             victoryUI.SetActive(true);
             isWon = true;
-            Destroy(other.gameObject);
+            Destroy(other.gameObject,0f);
         }
     }
 
