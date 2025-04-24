@@ -92,6 +92,7 @@ public class Enemy1 : MonoBehaviour
         if(maxHealth <=0){
             return;
         }
+        CameraShake.instance.Shake(3f,.2f);
         maxHealth -= damage;
     }
     private void OnDrawGizmosSelected()
@@ -109,6 +110,7 @@ public class Enemy1 : MonoBehaviour
     }
     void Die() {
     Debug.Log(this.gameObject.name + " Died");
+    CameraShake.instance.Shake(5f,.3f);
     Destroy(this.gameObject);
     
     }

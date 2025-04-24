@@ -87,6 +87,7 @@ public class Player : MonoBehaviour
         Vector2 velocity = rb.velocity ;
         velocity.y = jumpHeight;
         rb.velocity = velocity;
+        FindObjectOfType<Sound>().PlayJumpSound();
     }
 
     public void PlayerAttack(){
@@ -109,6 +110,7 @@ public class Player : MonoBehaviour
         if( maxHealth <=0){
             return;
         }
+        CameraShake.instance.Shake(3f,.2f);
         maxHealth -= damage;
     }
 
@@ -146,6 +148,7 @@ public class Player : MonoBehaviour
     void Die(){
         Debug.Log(this.transform.name + " Died");
         gameOverUI.SetActive(true);
+        CameraShake.instance.Shake(5f,.3f);
         Destroy(this.gameObject);
     }
 }
