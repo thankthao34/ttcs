@@ -66,6 +66,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6974830211789751509}
+  - {fileID: 6350636806633208497}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1511653667780033427
@@ -204,6 +205,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11d190b47f0625849af22875f218ee8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  victoryUI: {fileID: 0}
+  gameOverUI: {fileID: 0}
+  currentCoin: 0
+  currentCointext: {fileID: 0}
+  maxHealthText: {fileID: 0}
   maxHealth: 10
   movement: 0
   speed: 7
@@ -215,6 +221,8 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 256
+  explosionPrefab: {fileID: 1611078839582866188, guid: 5a5749fe0c784244c9561187a365c9cd, type: 3}
+  feetPoint: {fileID: 6350636806633208497}
 --- !u!95 &2792400246418131494
 Animator:
   serializedVersion: 5
@@ -236,3 +244,34 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &8104820336323227779
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6350636806633208497}
+  m_Layer: 7
+  m_Name: feet
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6350636806633208497
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8104820336323227779}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3892978072439748083}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

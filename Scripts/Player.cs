@@ -24,6 +24,10 @@ public class Player : MonoBehaviour
 
     private bool isWon = false;
 
+    
+    [SerializeField] private GameObject explosionPrefab;
+    [SerializeField] private Transform feetPoint;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -149,6 +153,8 @@ public class Player : MonoBehaviour
         Debug.Log(this.transform.name + " Died");
         gameOverUI.SetActive(true);
         CameraShake.instance.Shake(5f,.3f);
+        GameObject temp = Instantiate(explosionPrefab,feetPoint.position, Quaternion.identity);
+        Destroy(temp,.9f);
         Destroy(this.gameObject);
     }
 }

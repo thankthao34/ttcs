@@ -19,6 +19,9 @@ public class Enemy1 : MonoBehaviour
     public Transform attackPoint;
     public float attackRadius = 2f;
     public LayerMask attackLayer;
+
+    [SerializeField] private GameObject explosionPrefab;
+    [SerializeField] private Transform feetPoint;
     
 
     // Update is called once per frame
@@ -111,6 +114,8 @@ public class Enemy1 : MonoBehaviour
     void Die() {
     Debug.Log(this.gameObject.name + " Died");
     CameraShake.instance.Shake(5f,.3f);
+    GameObject temp = Instantiate(explosionPrefab,feetPoint.position, Quaternion.identity);
+    Destroy(temp,.9f);
     Destroy(this.gameObject);
     
     }
