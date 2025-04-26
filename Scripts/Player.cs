@@ -1,24 +1,32 @@
 using UnityEngine.UI;
 using UnityEngine;
+using Unity.Mathematics;
 
 public class Player : MonoBehaviour
 {
-    public GameObject victoryUI;
-    public GameObject gameOverUI;
-    public int currentCoin =0;
-    public Text currentCointext;
-    public Text maxHealthText;
-    public int maxHealth =10 ;
-    public float movement;
-    public float speed = 7f;
-    public float jumpHeight = 10f;
+    [Header("UI")]
+    [SerializeField] private GameObject victoryUI;
+    [SerializeField] private GameObject gameOverUI;
+    [SerializeField] private int currentCoin =0;
+    [SerializeField] private Text currentCointext;
+    [SerializeField] private Text maxHealthText;
+
+    [Space(3)]
+    [SerializeField] private int maxHealth =10 ;
+
+    [Header("Player Movement")]
+    private float movement;
+    [SerializeField] public float speed = 7f;
+    [SerializeField] private float jumpHeight = 10f;
 
     private bool facingRight = true;
     private bool isGround = true;
-    public Rigidbody2D rb;
+    
+    private Rigidbody2D rb;
     public Animator animator;
 
-    public Transform attackPoint;
+    [Header("Player Attack")]
+    private Transform attackPoint;
     public float attackRadius = 1.5f;
     public LayerMask targetLayer;
 
@@ -26,12 +34,14 @@ public class Player : MonoBehaviour
 
     
     [SerializeField] private GameObject explosionPrefab;
-    [SerializeField] private Transform feetPoint;
+    [SerializeField] private GameObject floatingtextprefab;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        rb = this.GetComponent<Rigidbody2D>();
+        animator = this.GetComponent<Animator>();
+        attackPoint = this.transform.GetChild(0).transform;
     }
 
     // Update is called once per frame
@@ -72,7 +82,7 @@ public class Player : MonoBehaviour
         }
         
         if(Input.GetMouseButtonDown(0)){
-            int randomIndex = Random.Range(0,3);
+            int randomIndex = UnityEngine.Random.Range(0, 3);
             if(randomIndex == 0){
                 animator.SetTrigger("Attack1");
             }
@@ -99,6 +109,8 @@ public class Player : MonoBehaviour
         if ( hitInfo){
             if(hitInfo.GetComponent<Enemy1>()!= null){
                 hitInfo.GetComponent<Enemy1>().EnemyTakeDamge(1);
+                GameObject tempfloatingText = Instantiate(floatingtextprefab,hitInfo.transform.position, Quaternion.identity);
+                Destroy(tempfloatingText, 1.1f);
             }
         }
     }
@@ -153,7 +165,7 @@ public class Player : MonoBehaviour
         Debug.Log(this.transform.name + " Died");
         gameOverUI.SetActive(true);
         CameraShake.instance.Shake(5f,.3f);
-        GameObject temp = Instantiate(explosionPrefab,feetPoint.position, Quaternion.identity);
+        GameObject temp = Instantiate(explosionPrefab,transform.position, Quaternion.identity);
         Destroy(temp,.9f);
         Destroy(this.gameObject);
     }
