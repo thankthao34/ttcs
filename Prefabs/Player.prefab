@@ -136,7 +136,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 2.5
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -180,18 +180,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.015249789, y: -0.14995074}
+  m_Offset: {x: -0.015249789, y: -0.0068439245}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 6.25, y: 4}
+    oldSize: {x: 5.5555553, y: 3.5555556}
     newSize: {x: 6, y: 0.64}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.5110124, y: 3.7667441}
+  m_Size: {x: 1.5110124, y: 3.4805305}
   m_EdgeRadius: 0
 --- !u!114 &5411831002970299370
 MonoBehaviour:
@@ -211,18 +211,15 @@ MonoBehaviour:
   currentCointext: {fileID: 0}
   maxHealthText: {fileID: 0}
   maxHealth: 10
-  movement: 0
   speed: 7
   jumpHeight: 15
-  rb: {fileID: 8098376757926878547}
   animator: {fileID: 2792400246418131494}
-  attackPoint: {fileID: 6974830211789751509}
   attackRadius: 1.5
   targetLayer:
     serializedVersion: 2
     m_Bits: 256
   explosionPrefab: {fileID: 1611078839582866188, guid: 5a5749fe0c784244c9561187a365c9cd, type: 3}
-  feetPoint: {fileID: 6350636806633208497}
+  floatingtextprefab: {fileID: 5418431642125669053, guid: 42eca659356955d418554dcafdfe8264, type: 3}
 --- !u!95 &2792400246418131494
 Animator:
   serializedVersion: 5
