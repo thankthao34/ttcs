@@ -34,7 +34,7 @@ public class Demon_boss : MonoBehaviour
                 facingLeft = true;
             }
 
-            if(Vector2.Distance(transform.position, player.position) <= retrieveDistance){
+            if(Vector2.Distance(transform.position, player.position) > retrieveDistance){
                 animator.SetBool("Attack",false);
                 Debug.Log("k kích hoạt Attack animation");
                 transform.position = Vector2.MoveTowards(transform.position, player.position, chaseSpeed * Time.deltaTime);
