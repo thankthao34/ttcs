@@ -1,4 +1,5 @@
-
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Undead_Boss : MonoBehaviour
@@ -21,10 +22,22 @@ public class Undead_Boss : MonoBehaviour
     public float attackRadius = 3.5f;
     public LayerMask attackLayer;
 
+    // minions
+    public GameObject minionPrefab;
+    public Transform spawnPoint;
+    public int maxMinions = 3;
+    private List<GameObject> spawnedMinions = new List<GameObject>();
+
+
     void Update()
     {
         if( maxHealth <=0){
             Die();
+        }
+
+        if(player == null){
+            animator.SetBool("PlayerDead",true);
+            return;
         }
         
         if(Vector2.Distance(transform.position, player.position) <= attackRange){
@@ -71,6 +84,30 @@ public class Undead_Boss : MonoBehaviour
         }
         CameraShake.instance.Shake(3f,.2f);
         maxHealth -= damage;
+        animator.SetTrigger("Damage");
+        TrySpawnMinions();
+    }
+
+    void TrySpawnMinions(){
+        spawnedMinions.RemoveAll(minion => minion == null);
+
+        int currentCount = spawnedMinions.Count;
+        int spawnCount = Mathf.Min(1, maxMinions - currentCount);
+
+        for (int i = 0; i < spawnCount; i++)
+        {
+            Vector3 offset = new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
+            GameObject minion = Instantiate(minionPrefab, spawnPoint.position + offset, Quaternion.identity);
+
+            // Reset Animator để đảm bảo appear animation chạy từ đầu
+            Animator ani = minion.GetComponent<Animator>();
+            if (ani != null)
+            {
+                ani.Play("Summon_Appear", -1, 0f); // Phát lại appear ngay từ đầu
+            }
+
+            spawnedMinions.Add(minion);
+        }
     }
     private void OnDrawGizmosSelected()
     {
