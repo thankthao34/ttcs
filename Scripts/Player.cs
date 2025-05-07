@@ -112,12 +112,19 @@ public class Player : MonoBehaviour
                 GameObject tempfloatingText = Instantiate(floatingtextprefab,hitInfo.transform.position, Quaternion.identity);
                 Destroy(tempfloatingText, 1.1f);
             }
+
+            if(hitInfo.GetComponent<minionPrefab>()!= null){
+                hitInfo.GetComponent<minionPrefab>().MinionsTakeDamge(1);
+                GameObject tempfloatingText = Instantiate(floatingtextprefab,hitInfo.transform.position, Quaternion.identity);
+                Destroy(tempfloatingText, 1.1f);
+            }
+            
             if(hitInfo.GetComponent<Undead_Boss>()!= null){
                 hitInfo.GetComponent<Undead_Boss>().BossTakeDamge(1);
                 GameObject tempfloatingText = Instantiate(floatingtextprefab,hitInfo.transform.position, Quaternion.identity);
                 Destroy(tempfloatingText, 1.1f);
             } 
-            Debug.Log(hitInfo.gameObject.name+"takes damage");
+
         }
     }
 
