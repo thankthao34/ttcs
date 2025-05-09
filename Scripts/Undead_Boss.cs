@@ -28,7 +28,10 @@ public class Undead_Boss : MonoBehaviour
     public int maxMinions = 3;
     private List<GameObject> spawnedMinions = new List<GameObject>();
 
-    public AnimationClip dieClip;
+    [SerializeField] private GameObject Undead_Die;
+    [SerializeField] private Transform feetPoint;
+
+    public GameObject keyPrefab;
 
     void Update()
     {
@@ -127,44 +130,29 @@ public class Undead_Boss : MonoBehaviour
         }
     }
 
-void Die() {
-    Debug.Log(this.gameObject.name + " Died");
-    CameraShake.instance.Shake(5f, .3f);
-    animator.SetTrigger("Die");
-    
-    // Xóa tất cả minions
-    foreach (GameObject minion in spawnedMinions)
-    {
-        if (minion != null)
+    void Die() {
+        Debug.Log(this.gameObject.name + " Died");
+        CameraShake.instance.Shake(5f, .3f);
+        GameObject temp = Instantiate(Undead_Die,feetPoint.position, Quaternion.identity);
+        Destroy(temp,1.11f);
+        
+        // Xóa tất cả minions
+        foreach (GameObject minion in spawnedMinions)
         {
-            Destroy(minion);
+            if (minion != null)
+            {
+                Destroy(minion);
+            }
+        }
+        spawnedMinions.Clear();
+        
+        Destroy(this.gameObject,1.11f);
+        if (keyPrefab != null){
+        Instantiate(keyPrefab, transform.position, Quaternion.identity);
         }
     }
-    spawnedMinions.Clear();
-    
-    // Sử dụng coroutine để đợi animation kết thúc
-    StartCoroutine(DestroyAfterAnimation());
-}
 
-IEnumerator DestroyAfterAnimation()
-{
-    // Đợi một frame để animator bắt đầu chuyển trạng thái
-    yield return null;
-    
-    // Lấy thông tin về trạng thái animation hiện tại
-    AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-    
-    // Kiểm tra xem có đang trong animation "Die" không (giả sử tag hoặc name của state là "Die")
-    while (!stateInfo.IsName("Die") || stateInfo.normalizedTime < 1.0f)
-    {
-        // Cập nhật thông tin trạng thái
-        stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        yield return null;
-    }
-    
-    // Animation đã kết thúc, destroy game object
-    Destroy(gameObject);
-}
+
 
     private void OnDrawGizmosSelected()
     {
