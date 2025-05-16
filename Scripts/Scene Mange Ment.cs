@@ -21,4 +21,9 @@ public class SceneMangeMent : MonoBehaviour
     {
         Debug.Log("Load next level");
     }
+    public void SetButton()
+    {
+        SceneManager.LoadScene("SetButton");
+    }
+    
 }

@@ -42,6 +42,11 @@ public class Player : MonoBehaviour
         rb = this.GetComponent<Rigidbody2D>();
         animator = this.GetComponent<Animator>();
         attackPoint = this.transform.GetChild(0).transform;
+
+        if (GameManager.GM == null)
+        {
+            Debug.LogError("GameManager không tồn tại! Vui lòng thêm GameManager vào Scene.");
+        }
     }
 
     // Update is called once per frame
@@ -59,20 +64,43 @@ public class Player : MonoBehaviour
         currentCointext.text = currentCoin.ToString();
         maxHealthText.text =maxHealth.ToString();
         movement = Input.GetAxis("Horizontal");
+        
+        movement = 0f;
+        if (GameManager.GM != null)
+        {
+            if (Input.GetKey(GameManager.GM.left))  // Sử dụng phím Left từ GameManager
+            {
+                movement = -1f;
+            }
+            else if (Input.GetKey(GameManager.GM.right))  // Sử dụng phím Right từ GameManager
+            {
+                movement = 1f;
+            }
+        }
 
-        if(movement <0f && facingRight == true ){
+        if (movement < 0f && facingRight == true)
+        {
             transform.eulerAngles = new Vector3(0f, -180f, 0f);
             facingRight = false;
         }
-        else if(movement >0f && facingRight == false){
+        else if (movement > 0f && facingRight == false)
+        {
             transform.eulerAngles = new Vector3(0f, 0f, 0f);
             facingRight = true;
         }
-        if(Input.GetKey(KeyCode.Space) && isGround == true){
+
+        if (GameManager.GM != null && Input.GetKeyDown(GameManager.GM.jump) && isGround == true)
+        {
             Jump();
             animator.SetBool("Jump", true);
-            isGround = false;  
+            isGround = false;
         }
+        // if (Input.GetKey(KeyCode.Space) && isGround == true)
+        // {
+        //     Jump();
+        //     animator.SetBool("Jump", true);
+        //     isGround = false;
+        // }
 
         if(Mathf.Abs(movement) > .1f) {
             animator.SetFloat("Walk", 1f);
@@ -81,17 +109,36 @@ public class Player : MonoBehaviour
             animator.SetFloat("Walk", 0f);
         }
         
-        if(Input.GetMouseButtonDown(0)){
+        if (GameManager.GM != null && Input.GetKeyDown(GameManager.GM.attack))
+        {
             int randomIndex = UnityEngine.Random.Range(0, 3);
-            if(randomIndex == 0){
+            if (randomIndex == 0)
+            {
                 animator.SetTrigger("Attack1");
             }
-            else if (randomIndex == 1){
+            else if (randomIndex == 1)
+            {
                 animator.SetTrigger("Attack2");
             }
-            else 
+            else
+            {
                 animator.SetTrigger("Attack3");
+            }
         }
+        // if (Input.GetMouseButtonDown(0))
+        // {
+        //     int randomIndex = UnityEngine.Random.Range(0, 3);
+        //     if (randomIndex == 0)
+        //     {
+        //         animator.SetTrigger("Attack1");
+        //     }
+        //     else if (randomIndex == 1)
+        //     {
+        //         animator.SetTrigger("Attack2");
+        //     }
+        //     else
+        //         animator.SetTrigger("Attack3");
+        // }
     }
 
     private void FixedUpdate(){
