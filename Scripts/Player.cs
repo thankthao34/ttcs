@@ -192,22 +192,33 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Va chạm với: " + other.gameObject.name);
-        if(other.gameObject.tag == "Coin"){
-            currentCoin ++;
+        
+        if (other.gameObject.tag == "Coin")
+        {
+            currentCoin++;
             other.gameObject.transform.GetChild(0).GetComponent<Animator>().SetTrigger("collect");
             Destroy(other.gameObject, 0f);
         }
 
-        if(other.gameObject.tag == "Trap"){
+        if (other.gameObject.tag == "Trap")
+        {
             Die();
         }
 
-        if (other.gameObject.tag == "Key"){
+        if (other.gameObject.tag == "Key")
+        {
             victoryUI.SetActive(true);
             isWon = true;
-            Destroy(other.gameObject,0f);
+            Destroy(other.gameObject, 0f);
         }
+
+        if (other.gameObject.tag == "Heart")
+        {
+            maxHealth++;
+            Destroy(other.gameObject, 0f);
+            Debug.Log("Va chạm với: " + other.gameObject.name);
+        }
+
     }
 
     private void OnDrawGizmosSelected()

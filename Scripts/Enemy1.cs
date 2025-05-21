@@ -22,6 +22,10 @@ public class Enemy1 : MonoBehaviour
 
     [SerializeField] private GameObject explosionPrefab;
     [SerializeField] private Transform feetPoint;
+
+    public GameObject heartPrefab;
+    public GameObject coinPrefab;
+
     
 
     // Update is called once per frame
@@ -117,6 +121,10 @@ public class Enemy1 : MonoBehaviour
     GameObject temp = Instantiate(explosionPrefab,feetPoint.position, Quaternion.identity);
     Destroy(temp,.9f);
     Destroy(this.gameObject);
-    
+    GameObject prefabToSpawn = (UnityEngine.Random.value > 0.5f) ? heartPrefab : coinPrefab;
+        if (prefabToSpawn != null)
+        {
+            Instantiate(prefabToSpawn, feetPoint.position, Quaternion.identity);
+        }
     }
 }

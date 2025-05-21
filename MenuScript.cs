@@ -4,11 +4,11 @@ using UnityEngine.UI;
 
 public class MenuScript : MonoBehaviour
 {
-     Transform menuPanel;  // Khai báo public để gán từ Inspector nếu cần
-    Event keyEvent;             // Giữ nguyên để xử lý sự kiện bàn phím
-     Text buttonText;     // Khai báo public để gán Text từ Inspector
-    KeyCode newKey;             // Giữ nguyên để lưu phím mới
-    bool waitingForKey;         // Giữ nguyên trạng thái chờ phím
+     Transform menuPanel;  
+    Event keyEvent;             
+     Text buttonText;     
+    KeyCode newKey;         
+    bool waitingForKey;         
 
     void Start()
     {
