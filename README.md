@@ -1,3 +1,2 @@
 # ttcs
-# ttcs
-# ttcs
+Hệ thống game được thiết kế dựa trên nền tảng Unity, cung cấp một trải nghiệm chơi đa dạng và phong phú cho người chơi thông qua các chức năng cơ bản và mở rộng. Người chơi bắt đầu hành trình bằng cách truy cập menu chính, nơi họ có thể điều chỉnh cài đặt như âm thanh và phím chức năng, tùy chỉnh theo sở thích cá nhân và lưu lại trước khi thoát game. Trong gameplay, người chơi điều khiển nhân vật di chuyển trên bản đồ, tấn công kẻ địch (bao gồm cả quái nấm và tiểu quái) bằng các phím đã gán, gây sát thương và thu thập vật phẩm như coin và heart để tăng tài nguyên hoặc hồi máu, hỗ trợ kéo dài thời gian sống sót. Kẻ địch được phân loại rõ ràng với Boss có khả năng triệu hồi tiểu quái, tạo thêm thử thách chiến thuật. Sau mỗi trận đấu, hệ thống ghi nhận thống kê chi tiết (coin, mạng giết, sức khỏe còn lại) để người chơi đánh giá hiệu quả và cải thiện chiến lược.
