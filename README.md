@@ -52,7 +52,7 @@
 
 - **Thống kê cuối trận chi tiết**: Hiển thị số coin tích lũy, số mạng giết, và sức khỏe còn lại sau mỗi trận đấu, hỗ trợ cải thiện chiến thuật.
 
-- **Menu luôn hiển thị**: Dễ dàng truy cập để tùy chỉnh cài đặt, mua sắm, hoặc thoát game mà không cần phím tắt.
+- **Menu hiển thị**: Dễ dàng truy cập để tùy chỉnh cài đặt hoặc thoát game mà không cần phím tắt.
 
 - **Hiệu ứng sinh động**: Tấn công kèm hiệu ứng rung camera và floating text, tăng trải nghiệm chiến đấu.
 
