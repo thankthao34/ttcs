@@ -57,6 +57,19 @@
 - **Hiệu ứng sinh động**: Tấn công kèm hiệu ứng rung camera và floating text, tăng trải nghiệm chiến đấu.
 
 ## Hình ảnh minh họa
+- **Màn hình giao diện menu chính của game**
+![alt text](image.png)
+- **Màn hình cài đặt game**
+![alt text](image-1.png)
+- **Màn hình khi chiến đấu kẻ địch (quái nấm)**
+![alt text](image-2.png)
+- **Các bẫy của game**
+![alt text](image-3.png)
+![alt text](image-5.png)
+- **Màn hình chiến đấu với Boss & các minion được triệu hổi**
+![alt text](image-4.png)
+- **Màn hình chiến thắng game & thống kê game**
+![alt text](image-6.png)
 
 
 
