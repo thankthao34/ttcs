@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Undead_Boss : MonoBehaviour
 {
     public Animator animator;
-    public int maxHealth = 10;
+    public int maxHealth = 30;
     public Transform player;
     public float attackRange = 10f;
     private bool playerInRange = false;
@@ -35,7 +35,7 @@ public class Undead_Boss : MonoBehaviour
 
     void Update()
     {
-        if (maxHealth <= 0 )
+        if (maxHealth <= 0)
         {
             Die();
         }
@@ -77,6 +77,7 @@ public class Undead_Boss : MonoBehaviour
                 animator.SetBool("Attack", true);
             }
         }
+        spawnedMinions.RemoveAll(minion => minion == null);
     }
 
     public void Attack()
@@ -148,7 +149,7 @@ public class Undead_Boss : MonoBehaviour
         
         Destroy(this.gameObject,1.11f);
         if (keyPrefab != null){
-        Instantiate(keyPrefab, transform.position, Quaternion.identity);
+        Instantiate(keyPrefab, feetPoint.position, Quaternion.identity);
         }
     }
 

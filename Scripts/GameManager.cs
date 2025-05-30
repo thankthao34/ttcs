@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour {
     public KeyCode jump { get; set; }
     public KeyCode attack { get; set; }
 
+    public int enemiesKilled = 0; 
+
     void Awake()
     {
         if (GM == null)
@@ -34,5 +36,11 @@ public class GameManager : MonoBehaviour {
 
     void Update () {
 
+    }
+
+    public void AddEnemyKilled()
+    {
+        enemiesKilled++;
+        Debug.Log("Enemies killed: " + enemiesKilled); 
     }
 }

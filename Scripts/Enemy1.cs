@@ -115,16 +115,22 @@ public class Enemy1 : MonoBehaviour
             Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
         }
     }
-    void Die() {
-    Debug.Log(this.gameObject.name + " Died");
-    CameraShake.instance.Shake(5f,.3f);
-    GameObject temp = Instantiate(explosionPrefab,feetPoint.position, Quaternion.identity);
-    Destroy(temp,.9f);
-    Destroy(this.gameObject);
-    GameObject prefabToSpawn = (UnityEngine.Random.value > 0.5f) ? heartPrefab : coinPrefab;
+    void Die()
+    {
+        Debug.Log(this.gameObject.name + " Died");
+        CameraShake.instance.Shake(5f, .3f);
+        GameObject temp = Instantiate(explosionPrefab, feetPoint.position, Quaternion.identity);
+        Destroy(temp, .9f);
+        if (GameManager.GM != null)
+        {
+            GameManager.GM.AddEnemyKilled();
+        }
+        Destroy(this.gameObject);
+        GameObject prefabToSpawn = (UnityEngine.Random.value > 0.5f) ? heartPrefab : coinPrefab;
         if (prefabToSpawn != null)
         {
             Instantiate(prefabToSpawn, feetPoint.position, Quaternion.identity);
         }
-    }
+        Destroy(prefabToSpawn,3f);
+        }
 }

@@ -7,12 +7,14 @@ public class Player : MonoBehaviour
     [Header("UI")]
     [SerializeField] private GameObject victoryUI;
     [SerializeField] private GameObject gameOverUI;
-    [SerializeField] private int currentCoin =0;
+    [SerializeField] public int currentCoin = 0;
     [SerializeField] private Text currentCointext;
     [SerializeField] private Text maxHealthText;
-
+     [SerializeField] private Text Cointext;
+    [SerializeField] private Text HealthText;
+    [SerializeField] private Text enemiesKilledText;
     [Space(3)]
-    [SerializeField] private int maxHealth =10 ;
+    [SerializeField] public int maxHealth = 10;
 
     [Header("Player Movement")]
     private float movement;
@@ -21,7 +23,7 @@ public class Player : MonoBehaviour
 
     private bool facingRight = true;
     private bool isGround = true;
-    
+
     private Rigidbody2D rb;
     public Animator animator;
 
@@ -32,9 +34,11 @@ public class Player : MonoBehaviour
 
     private bool isWon = false;
 
-    
+
     [SerializeField] private GameObject explosionPrefab;
     [SerializeField] private GameObject floatingtextprefab;
+
+    Text buttonText;
 
     // Start is called before the first frame update
     void Start()
@@ -52,27 +56,31 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isWon){
-            animator.SetFloat("Walk",0);
-            movement =0f;
-            speed =0f;
+        if (isWon)
+        {
+            animator.SetFloat("Walk", 0);
+            movement = 0f;
+            speed = 0f;
             return;
         }
-        if(maxHealth <=0){
+        if (maxHealth <= 0)
+        {
             Die();
         }
         currentCointext.text = currentCoin.ToString();
-        maxHealthText.text =maxHealth.ToString();
+        maxHealthText.text = maxHealth.ToString();
+        Cointext.text = currentCoin.ToString();
+        HealthText.text = maxHealth.ToString();
         movement = Input.GetAxis("Horizontal");
-        
+
         movement = 0f;
         if (GameManager.GM != null)
         {
-            if (Input.GetKey(GameManager.GM.left))  // Sử dụng phím Left từ GameManager
+            if (Input.GetKey(GameManager.GM.left))  
             {
                 movement = -1f;
             }
-            else if (Input.GetKey(GameManager.GM.right))  // Sử dụng phím Right từ GameManager
+            else if (Input.GetKey(GameManager.GM.right))  
             {
                 movement = 1f;
             }
@@ -102,13 +110,15 @@ public class Player : MonoBehaviour
         //     isGround = false;
         // }
 
-        if(Mathf.Abs(movement) > .1f) {
+        if (Mathf.Abs(movement) > .1f)
+        {
             animator.SetFloat("Walk", 1f);
         }
-        else if(movement <.1f) {
+        else if (movement < .1f)
+        {
             animator.SetFloat("Walk", 0f);
         }
-        
+
         if (GameManager.GM != null && Input.GetKeyDown(GameManager.GM.attack))
         {
             int randomIndex = UnityEngine.Random.Range(0, 3);
@@ -141,58 +151,69 @@ public class Player : MonoBehaviour
         // }
     }
 
-    private void FixedUpdate(){
-        transform.position += new Vector3(movement,0f,0f) * Time.fixedDeltaTime * speed;
+    private void FixedUpdate()
+    {
+        transform.position += new Vector3(movement, 0f, 0f) * Time.fixedDeltaTime * speed;
     }
-    void Jump(){
-        Vector2 velocity = rb.velocity ;
+    void Jump()
+    {
+        Vector2 velocity = rb.velocity;
         velocity.y = jumpHeight;
         rb.velocity = velocity;
         FindObjectOfType<Sound>().PlayJumpSound();
     }
 
-    public void PlayerAttack(){
+    public void PlayerAttack()
+    {
         Collider2D hitInfo = Physics2D.OverlapCircle(attackPoint.position, attackRadius, targetLayer);
-        if ( hitInfo){
-            if(hitInfo.GetComponent<Enemy1>()!= null){
+        if (hitInfo)
+        {
+            if (hitInfo.GetComponent<Enemy1>() != null)
+            {
                 hitInfo.GetComponent<Enemy1>().EnemyTakeDamge(1);
-                GameObject tempfloatingText = Instantiate(floatingtextprefab,hitInfo.transform.position, Quaternion.identity);
+                GameObject tempfloatingText = Instantiate(floatingtextprefab, hitInfo.transform.position, Quaternion.identity);
                 Destroy(tempfloatingText, 1.1f);
             }
 
-            if(hitInfo.GetComponent<minionPrefab>()!= null){
+            if (hitInfo.GetComponent<minionPrefab>() != null)
+            {
                 hitInfo.GetComponent<minionPrefab>().MinionsTakeDamge(1);
-                GameObject tempfloatingText = Instantiate(floatingtextprefab,hitInfo.transform.position, Quaternion.identity);
+                GameObject tempfloatingText = Instantiate(floatingtextprefab, hitInfo.transform.position, Quaternion.identity);
                 Destroy(tempfloatingText, 1.1f);
             }
-            
-            if(hitInfo.GetComponent<Undead_Boss>()!= null){
+
+            if (hitInfo.GetComponent<Undead_Boss>() != null)
+            {
                 hitInfo.GetComponent<Undead_Boss>().BossTakeDamge(1);
-                GameObject tempfloatingText = Instantiate(floatingtextprefab,hitInfo.transform.position, Quaternion.identity);
+                GameObject tempfloatingText = Instantiate(floatingtextprefab, hitInfo.transform.position, Quaternion.identity);
                 Destroy(tempfloatingText, 1.1f);
-            } 
+            }
 
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "Ground"){
+        if (collision.gameObject.tag == "Ground")
+        {
             isGround = true;
             animator.SetBool("Jump", false);
         }
+
     }
-    public void PlayerTakeDamage( int damage){
-        if( maxHealth <=0){
+    public void PlayerTakeDamage(int damage)
+    {
+        if (maxHealth <= 0)
+        {
             return;
         }
-        CameraShake.instance.Shake(3f,.2f);
+        CameraShake.instance.Shake(3f, .2f);
         maxHealth -= damage;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        
+
         if (other.gameObject.tag == "Coin")
         {
             currentCoin++;
@@ -219,25 +240,32 @@ public class Player : MonoBehaviour
             Debug.Log("Va chạm với: " + other.gameObject.name);
         }
 
+        if (enemiesKilledText != null && GameManager.GM != null)
+        {
+            enemiesKilledText.text =  GameManager.GM.enemiesKilled.ToString();
+        }
+
     }
 
     private void OnDrawGizmosSelected()
     {
-        if (attackPoint == null){
-            return ;
+        if (attackPoint == null)
+        {
+            return;
 
         }
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(attackPoint.position,attackRadius);
+        Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
 
     }
 
-    void Die(){
+    void Die()
+    {
         Debug.Log(this.transform.name + " Died");
         gameOverUI.SetActive(true);
-        CameraShake.instance.Shake(5f,.3f);
-        GameObject temp = Instantiate(explosionPrefab,transform.position, Quaternion.identity);
-        Destroy(temp,.9f);
+        CameraShake.instance.Shake(5f, .3f);
+        GameObject temp = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        Destroy(temp, .9f);
         Destroy(this.gameObject);
     }
 }

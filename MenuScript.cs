@@ -4,18 +4,16 @@ using UnityEngine.UI;
 
 public class MenuScript : MonoBehaviour
 {
-     Transform menuPanel;  
+    Transform menuPanel;  
     Event keyEvent;             
-     Text buttonText;     
+    Text buttonText;     
     KeyCode newKey;         
     bool waitingForKey;         
 
     void Start()
     {
         menuPanel = transform.Find("Menu");
-        menuPanel.gameObject.SetActive(false);
         waitingForKey = false;
-
 
         // Cập nhật hiển thị phím ban đầu
         for (int i = 0; i < menuPanel.childCount; i++)
@@ -44,19 +42,11 @@ public class MenuScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && !menuPanel.gameObject.activeSelf)
-        {
-            menuPanel.gameObject.SetActive(true);
-        }
-        else if (Input.GetKeyDown(KeyCode.Escape) && menuPanel.gameObject.activeSelf)
-        {
-            menuPanel.gameObject.SetActive(false);
-        }
     }
 
     void OnGUI()
     {
-        keyEvent = Event.current;  // Giữ nguyên để xử lý sự kiện bàn phím
+        keyEvent = Event.current;  
 
         if (keyEvent.isKey && waitingForKey)
         {
@@ -65,7 +55,7 @@ public class MenuScript : MonoBehaviour
         }
     }
 
-    public void StartAssignment(string keyName)  // Giữ nguyên logic ban đầu
+    public void StartAssignment(string keyName)  
     {
         if (!waitingForKey)
         {
@@ -73,12 +63,12 @@ public class MenuScript : MonoBehaviour
         }
     }
 
-    public void SendText(Text text)  // Giữ nguyên logic ban đầu, nhưng không cần gọi từ OnClick
+    public void SendText(Text text)  
     {
         buttonText = text;
     }
 
-    IEnumerator WaitForKey()  // Giữ nguyên logic ban đầu
+    IEnumerator WaitForKey()  
     {
         while (!keyEvent.isKey)
         {
@@ -86,7 +76,7 @@ public class MenuScript : MonoBehaviour
         }
     }
 
-    public IEnumerator AssignKey(string keyName)  // Giữ nguyên logic ban đầu
+    public IEnumerator AssignKey(string keyName)  
     {
         waitingForKey = true;
         yield return WaitForKey();
