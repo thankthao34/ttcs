@@ -129,8 +129,10 @@ public class Enemy1 : MonoBehaviour
         GameObject prefabToSpawn = (UnityEngine.Random.value > 0.5f) ? heartPrefab : coinPrefab;
         if (prefabToSpawn != null)
         {
-            Instantiate(prefabToSpawn, feetPoint.position, Quaternion.identity);
+            GameObject spawnedItem = Instantiate(prefabToSpawn, feetPoint.position, Quaternion.identity);
+            // Tự hủy vật phẩm sau 3 giây
+            Destroy(spawnedItem, 3f);
         }
-        Destroy(prefabToSpawn,3f);
+        
         }
 }
