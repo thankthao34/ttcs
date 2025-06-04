@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     [SerializeField] public int currentCoin = 0;
     [SerializeField] private Text currentCointext;
     [SerializeField] private Text maxHealthText;
-     [SerializeField] private Text Cointext;
+    [SerializeField] private Text Cointext;
     [SerializeField] private Text HealthText;
     [SerializeField] private Text enemiesKilledText;
     [Space(3)]
@@ -34,11 +34,15 @@ public class Player : MonoBehaviour
 
     private bool isWon = false;
 
-
     [SerializeField] private GameObject explosionPrefab;
     [SerializeField] private GameObject floatingtextprefab;
 
     Text buttonText;
+
+    // Biến thời gian rơi tự do dựa trên tọa độ y giảm
+    private float fallTime = 0f;
+    private const float MAX_FALL_TIME = 3f; // Thời gian tối đa y giảm trước khi thua
+    private float previousY; // Tọa độ y trước đó
 
     // Start is called before the first frame update
     void Start()
@@ -46,6 +50,7 @@ public class Player : MonoBehaviour
         rb = this.GetComponent<Rigidbody2D>();
         animator = this.GetComponent<Animator>();
         attackPoint = this.transform.GetChild(0).transform;
+        previousY = transform.position.y; // Khởi tạo tọa độ y ban đầu
 
         if (GameManager.GM == null)
         {
@@ -103,12 +108,6 @@ public class Player : MonoBehaviour
             animator.SetBool("Jump", true);
             isGround = false;
         }
-        // if (Input.GetKey(KeyCode.Space) && isGround == true)
-        // {
-        //     Jump();
-        //     animator.SetBool("Jump", true);
-        //     isGround = false;
-        // }
 
         if (Mathf.Abs(movement) > .1f)
         {
@@ -135,26 +134,31 @@ public class Player : MonoBehaviour
                 animator.SetTrigger("Attack3");
             }
         }
-        // if (Input.GetMouseButtonDown(0))
-        // {
-        //     int randomIndex = UnityEngine.Random.Range(0, 3);
-        //     if (randomIndex == 0)
-        //     {
-        //         animator.SetTrigger("Attack1");
-        //     }
-        //     else if (randomIndex == 1)
-        //     {
-        //         animator.SetTrigger("Attack2");
-        //     }
-        //     else
-        //         animator.SetTrigger("Attack3");
-        // }
     }
 
     private void FixedUpdate()
     {
         transform.position += new Vector3(movement, 0f, 0f) * Time.fixedDeltaTime * speed;
+
+        // Kiểm tra tọa độ y giảm liên tục
+        float currentY = transform.position.y;
+        if (currentY < previousY) 
+        {
+            fallTime += Time.fixedDeltaTime;
+            Debug.Log("Falling time: " + fallTime + "s, Current Y: " + currentY + ", Previous Y: " + previousY);
+            if (fallTime >= MAX_FALL_TIME)
+            {
+                Debug.Log("Player thua do tọa độ y giảm quá 3s!");
+                maxHealth = 0; 
+            }
+        }
+        else
+        {
+            fallTime = 0f; // Reset khi tọa độ y không giảm
+        }
+        previousY = currentY; // Cập nhật tọa độ y trước đó
     }
+
     void Jump()
     {
         Vector2 velocity = rb.velocity;
@@ -188,7 +192,6 @@ public class Player : MonoBehaviour
                 GameObject tempfloatingText = Instantiate(floatingtextprefab, hitInfo.transform.position, Quaternion.identity);
                 Destroy(tempfloatingText, 1.1f);
             }
-
         }
     }
 
@@ -198,9 +201,10 @@ public class Player : MonoBehaviour
         {
             isGround = true;
             animator.SetBool("Jump", false);
+            Debug.Log("Chạm đất, isGround = true");
         }
-
     }
+
     public void PlayerTakeDamage(int damage)
     {
         if (maxHealth <= 0)
@@ -213,7 +217,6 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-
         if (other.gameObject.tag == "Coin")
         {
             currentCoin++;
@@ -242,9 +245,8 @@ public class Player : MonoBehaviour
 
         if (enemiesKilledText != null && GameManager.GM != null)
         {
-            enemiesKilledText.text =  GameManager.GM.enemiesKilled.ToString();
+            enemiesKilledText.text = GameManager.GM.enemiesKilled.ToString();
         }
-
     }
 
     private void OnDrawGizmosSelected()
@@ -252,11 +254,9 @@ public class Player : MonoBehaviour
         if (attackPoint == null)
         {
             return;
-
         }
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
-
     }
 
     void Die()

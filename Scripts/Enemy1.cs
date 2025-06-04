@@ -107,11 +107,9 @@ public class Enemy1 : MonoBehaviour
         if (detectPoint == null){
             return;
         }
-        Gizmos.color = Color.yellow;
         Gizmos.DrawRay(detectPoint.position,Vector2.down * distance);
 
         if(attackPoint != null){
-            Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
         }
     }
